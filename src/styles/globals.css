@@ -4,9 +4,29 @@
 
 @layer base {
   h1 {
-    @apply text-3xl;
+    @apply text-4xl font-extrabold;
   }
   h2 {
-    @apply text-xl;
+    @apply text-2xl font-bold;
+  }
+}
+
+@layer components {
+  .background-animate {
+    background-size: 400%;
+
+    -webkit-animation: MovingBg 6s ease-in infinite;
+    -moz-animation: MovingBg 6s ease-in infinite;
+    animation: MovingBg 6s ease-in infinite;
+  }
+}
+
+@keyframes MovingBg {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
