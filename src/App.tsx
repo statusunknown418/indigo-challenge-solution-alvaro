@@ -22,7 +22,7 @@ function App() {
       const newLine = line.replace(/[#-]/g, '');
 
       const findToken = Object.keys(tokens).find((token) => {
-        return line.substring(0, 3).replace(/\s/g, '').replace(/[a-z]/g, '') === token;
+        return line.replace(/\s/g, '').replace(/[a-z]/g, '') === token;
       }) as keyof typeof tokens;
 
       if (findToken === '---') {
