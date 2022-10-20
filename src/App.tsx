@@ -1,16 +1,11 @@
-import { useMemo, useState } from 'react';
+import { createElement, useState } from 'react';
 import './styles/globals.css';
 
 const tokens = {
-  '#': (s: string) => <h1>{s.substring(1)}</h1>,
-  '##': (s: string) => <h2>{s.substring(2)}</h2>,
-  '---': (s: string) => (
-    <>
-      <hr />
-      <p>{s.substring(3)}</p>
-    </>
-  ),
-  'DEFAULT': (s: string) => <p>{s}</p>,
+  '#': 'h1',
+  '##': 'h2',
+  '---': 'hr',
+  'DEFAULT': 'p',
 };
 
 function App() {
@@ -20,24 +15,34 @@ function App() {
     setMarkdown(e.target.value);
   };
 
-  const parseMarkdown = useMemo(() => {
+  const makeMarkdown = () => {
     const lines = markdown.split('\n');
 
-    console.log(lines[0].substring(0, 2));
+    console.log(lines[0].substring(0, 3));
 
     return lines.map((line, i) => {
-      const token = Object.keys(tokens).find((token) => {
-        return line.substring(0, 3).startsWith(token);
+      const newLine = line.replace(/[#-]/g, '');
+
+      const findToken = Object.keys(tokens).find((token) => {
+        return line.substring(0, 3).replace(/\s/g, '').replace(/[a-z]/g, '') === token;
       }) as keyof typeof tokens;
 
-      return tokens[token || 'DEFAULT'](line);
+      if (!findToken) {
+        return createElement(tokens.DEFAULT, { key: i }, newLine);
+      }
+
+      if (findToken === '---') {
+        return createElement(tokens[findToken], { key: i });
+      }
+
+      return createElement(tokens[findToken], { key: i }, newLine);
     });
-  }, [markdown]);
+  };
 
   return (
     <div>
       <textarea onChange={handleChange} value={markdown} rows={5} />
-      <div>{parseMarkdown}</div>
+      <div>{makeMarkdown()}</div>
     </div>
   );
 }
