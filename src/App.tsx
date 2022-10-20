@@ -25,15 +25,11 @@ function App() {
         return line.substring(0, 3).replace(/\s/g, '').replace(/[a-z]/g, '') === token;
       }) as keyof typeof tokens;
 
-      if (!findToken) {
-        return createElement(tokens.DEFAULT, { key: i }, newLine);
-      }
-
       if (findToken === '---') {
         return createElement(tokens[findToken], { key: i });
       }
 
-      return createElement(tokens[findToken], { key: i }, newLine);
+      return createElement(tokens[findToken] || tokens.DEFAULT, { key: i }, newLine);
     });
   }, [markdown]);
 

@@ -9,6 +9,10 @@
   h2 {
     @apply text-2xl font-bold;
   }
+
+  hr {
+    @apply border border-gray-200 rounded-full;
+  }
 }
 
 @layer components {
